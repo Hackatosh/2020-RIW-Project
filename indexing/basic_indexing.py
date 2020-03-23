@@ -1,22 +1,9 @@
-import os
 import pickle
-from typing import Iterator, List, Dict, Tuple
+from typing import List, Tuple
 
-from indexing.idmap import IdMap
-
-InvertedIndex = Dict[str, List[int]]
-
-
-def generate_file_paths(main_directory: str) -> Iterator[Tuple[str, str]]:
-    """Recursively browse the directory provided and create a generator containing Tuples composed of
-    the absolute path and the relative path (relative to main_directory) of every file contained in the folder or its
-    subfolders"""
-    wd = os.getcwd()
-    for (dirpath, dirnames, filenames) in os.walk(main_directory):
-        for filename in filenames:
-            absolute_path = os.path.join(wd, dirpath, filename)
-            relative_path = os.path.relpath(absolute_path, main_directory)
-            yield absolute_path, relative_path
+from common.helpers import generate_file_paths
+from common.typing import BasicInvertedIndex
+from common.idmap import IdMap
 
 
 def parse_document(document_absolute_path: str) -> List[str]:
@@ -32,7 +19,7 @@ def parse_document(document_absolute_path: str) -> List[str]:
     return result
 
 
-def build_inverted_index_basic(collection_directory: str) -> Tuple[InvertedIndex, IdMap]:
+def build_inverted_index_basic(collection_directory: str) -> Tuple[BasicInvertedIndex, IdMap]:
     """ Build the most basic inverted index possible : the index indicates in which documents every word
     appears. To lessen the size of the inverted index, we use document ids instead of document path / name.
     The mapping between ids and documents path (relative to the collection_directory) is stored in IdMap."""
@@ -51,14 +38,14 @@ def build_inverted_index_basic(collection_directory: str) -> Tuple[InvertedIndex
     return inverted_index, id_map
 
 
-def save_inverted_index_pickle(inverted_index: InvertedIndex, absolute_path: str) -> None:
+def save_inverted_index_pickle(inverted_index: BasicInvertedIndex, absolute_path: str) -> None:
     """Serialize the provided inverted index to the given absolute path using the pickle"""
     with open(absolute_path, "wb") as f:
         pickle.dump(inverted_index, f)
         f.close()
 
 
-def load_inverted_index_pickle(absolute_path: str) -> InvertedIndex:
+def load_inverted_index_pickle(absolute_path: str) -> BasicInvertedIndex:
     """Deserialize the inverted index located at the given absolute path"""
     with open(absolute_path, 'rb') as fb:
         index = pickle.load(fb)
