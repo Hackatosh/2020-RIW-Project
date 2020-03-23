@@ -1,7 +1,6 @@
 import os
 from typing import Iterator, List, Dict, Tuple
-
-from idmap import IdMap
+from indexing.idmap import IdMap
 
 InvertedIndex = Dict[str, List[int]]
 
@@ -48,9 +47,3 @@ def build_inverted_index_basic(collection_directory: str) -> Tuple[InvertedIndex
             else:
                 inverted_index[term] = [document_id]
     return inverted_index, id_map
-
-
-print("TEST")
-
-for file in generate_file_paths("Queries"):
-    print(file)
