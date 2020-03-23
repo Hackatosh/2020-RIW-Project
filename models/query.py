@@ -28,4 +28,5 @@ class Query:
         """Build a Query object by parsing the text file located at the given path"""
         with open(path, 'r') as f:
             line = f.readline()
+            line = line.rstrip() # Trailing endline can cause bugs. WARNING : You can't see them with a print !
             return Query(line)

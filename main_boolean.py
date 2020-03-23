@@ -20,6 +20,8 @@ if __name__ == '__main__':
     collection_path = "Data/0"
     query_path = "Queries/dev_queries/query.2"
 
+    """
+
     # INDEXING AND SERIALIZATION
 
     print("Starting indexing...")
@@ -38,7 +40,7 @@ if __name__ == '__main__':
 
     end_time = time.time()
     print(f"Serialization finished. Time taken : {end_time - begin_time}")
-
+    """
     # DESERIALIZATION AND QUERY HANDLING
 
     print("Starting deserializing...")
