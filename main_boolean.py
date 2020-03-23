@@ -25,7 +25,7 @@ if __name__ == '__main__':
     print("Starting indexing...")
     begin_time = time.time()
 
-    inverted_index, id_map = build_inverted_index_basic("collection_path")
+    inverted_index, id_map = build_inverted_index_basic(collection_path)
 
     end_time = time.time()
     print(f"Indexing finished. Time taken : {end_time - begin_time}")
