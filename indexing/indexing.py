@@ -1,5 +1,7 @@
 import os
+import pickle
 from typing import Iterator, List, Dict, Tuple
+
 from indexing.idmap import IdMap
 
 InvertedIndex = Dict[str, List[int]]
@@ -47,3 +49,17 @@ def build_inverted_index_basic(collection_directory: str) -> Tuple[InvertedIndex
             else:
                 inverted_index[term] = [document_id]
     return inverted_index, id_map
+
+
+def save_inverted_index_pickle(inverted_index: InvertedIndex, absolute_path: str) -> None:
+    """Serialize the provided inverted index to the given absolute path using the pickle"""
+    with open(absolute_path, "wb") as f:
+        pickle.dump(inverted_index, f)
+        f.close()
+
+
+def load_inverted_index_pickle(absolute_path: str) -> InvertedIndex:
+    """Deserialize the inverted index located at the given absolute path"""
+    with open(absolute_path, 'rb') as fb:
+        index = pickle.load(fb)
+        return index
