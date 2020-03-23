@@ -1,5 +1,5 @@
 import os
-from typing import Iterator
+from typing import Iterator, List
 
 
 def generate_file_paths(main_directory: str) -> Iterator[str]:
@@ -10,7 +10,17 @@ def generate_file_paths(main_directory: str) -> Iterator[str]:
             yield os.path.join(dirpath, filename)
 
 
-file_paths = generate_file_paths("Data")
+def parse_document(document_path: str) -> List[str]:
+    """Given the path to the document, returns the list of the filtered and tokenized words, in their order of appearance.
+    For now, as the words are already tokenized and there is no stop word list, it just split every line of the file."""
+    result = []
+    with open(document_path, 'r') as f:
+        line = f.readline()
+        while line:
+            parsed = line.split()
+            result += parsed
+            line = f.readline()
+    return result
 
-for file_path in file_paths:
-    print(file_path)
+
+print(parse_document("test.txt"))
