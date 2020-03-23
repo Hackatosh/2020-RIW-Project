@@ -24,9 +24,12 @@ class IdMap:
             raise KeyError("String not registered in IdMap")
         return self.str_to_id[s]
 
-    def insert_str(self, s: str) -> None:
-        self.str_to_id[s] = len(self.id_to_str)
+    def insert_str(self, s: str) -> int:
+        """Inserts a new string in the IdMap and returns its id"""
+        index = len(self.id_to_str)
+        self.str_to_id[s] = index
         self.id_to_str.append(s)
+        return index
 
     def __getitem__(self, key: Union[int, str]) -> Union[str, int]:
         """If `key` is a integer, use _get_str;
