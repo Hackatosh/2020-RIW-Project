@@ -33,7 +33,7 @@ def build_inverted_index_basic(collection_directory: str, generate_stats: bool =
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
-    collection_statistics = CollectionStatistics if generate_stats else None
+    collection_statistics = CollectionStatistics() if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -44,8 +44,7 @@ def build_inverted_index_basic(collection_directory: str, generate_stats: bool =
             else:
                 inverted_index[term] = [document_id]
         if generate_stats:
-            document_statistics = DocumentStatistics(parsed_document)
-            collection_statistics.add_document_statistics(document_id, document_statistics)
+            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 
@@ -58,7 +57,7 @@ def build_frequency_inverted_index(collection_directory: str, generate_stats: bo
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
-    collection_statistics = CollectionStatistics if generate_stats else None
+    collection_statistics = CollectionStatistics() if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -72,9 +71,7 @@ def build_frequency_inverted_index(collection_directory: str, generate_stats: bo
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = 1
         if generate_stats:
-            document_statistics = DocumentStatistics(parsed_document)
-            print(document_statistics)
-            collection_statistics.add_document_statistics(document_id, document_statistics)
+            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 
@@ -88,7 +85,7 @@ def build_frequency_inverted_index_with_pos(collection_directory: str, generate_
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
-    collection_statistics = CollectionStatistics if generate_stats else None
+    collection_statistics = CollectionStatistics() if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -103,8 +100,7 @@ def build_frequency_inverted_index_with_pos(collection_directory: str, generate_
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = (1, [i])
         if generate_stats:
-            document_statistics = DocumentStatistics(parsed_document)
-            collection_statistics.add_document_statistics(document_id, document_statistics)
+            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 

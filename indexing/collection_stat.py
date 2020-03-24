@@ -15,7 +15,7 @@ class CollectionStatistics:
     def get_document_statistics(self, document_id: int) -> DocumentStatistics:
         return self.__documents_stats[document_id]
 
-    def add_document_statistics(self, document_id: int, document_stats: DocumentStatistics):
+    def add_document_statistics(self, document_id: int, document_stats: DocumentStatistics) -> None:
         if document_id not in self.__documents_stats:
             self.__nbr_documents += 1
         self.__documents_stats[document_id] = document_stats
