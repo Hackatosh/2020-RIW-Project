@@ -50,5 +50,5 @@ class IdMap:
 
     @staticmethod
     def load_id_map_file(absolute_path: str) -> "IdMap":
-        """Deserialize the IdMap object located at the given absolute path using the pickle module"""
+        """Deserialize the IdMap object located at the given absolute path"""
         return deserialize_object(absolute_path)
