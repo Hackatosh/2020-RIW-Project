@@ -1,5 +1,5 @@
 from common.idmap import IdMap
-from indexing.basic_indexing import build_inverted_index_basic, save_inverted_index_pickle, load_inverted_index_pickle
+from indexing.indexing import build_inverted_index_basic, save_basic_inverted_index_pickle, load_basic_inverted_index
 import time
 
 from models.boolean_model import query_boolean_model
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     begin_time = time.time()
 
     id_map_loaded = IdMap.load_id_map_file(imap_path)
-    inverted_index_loaded = load_inverted_index_pickle(invind_path)
+    inverted_index_loaded = load_basic_inverted_index(invind_path)
 
     end_time = time.time()
     print(f"Deserialization finished. Time taken : {end_time - begin_time}")
