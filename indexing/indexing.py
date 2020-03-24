@@ -44,7 +44,8 @@ def build_inverted_index_basic(collection_directory: str, generate_stats: bool =
             else:
                 inverted_index[term] = [document_id]
         if generate_stats:
-            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+            document_statistics = DocumentStatistics(parsed_document)
+            collection_statistics.add_document_statistics(document_id, document_statistics)
     return inverted_index, id_map, collection_statistics
 
 
@@ -71,7 +72,9 @@ def build_frequency_inverted_index(collection_directory: str, generate_stats: bo
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = 1
         if generate_stats:
-            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+            document_statistics = DocumentStatistics(parsed_document)
+            print(document_statistics)
+            collection_statistics.add_document_statistics(document_id, document_statistics)
     return inverted_index, id_map, collection_statistics
 
 
@@ -100,7 +103,8 @@ def build_frequency_inverted_index_with_pos(collection_directory: str, generate_
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = (1, [i])
         if generate_stats:
-            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+            document_statistics = DocumentStatistics(parsed_document)
+            collection_statistics.add_document_statistics(document_id, document_statistics)
     return inverted_index, id_map, collection_statistics
 
 

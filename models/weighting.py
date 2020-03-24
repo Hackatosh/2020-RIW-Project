@@ -25,7 +25,7 @@ def get_normalized_tf(term: str, document_id: int, frequency_inverted_index: Fre
                       collection_stats: CollectionStatistics) -> float:
     """ Get the frequency of the term normalized using the maximum frequency of the document"""
     tf = get_tf(term, document_id, frequency_inverted_index)
-    normalized_tf = 0.5 + 0.5 * (tf / collection_stats[document_id].max_freq)
+    normalized_tf = 0.5 + 0.5 * (tf / collection_stats.get_document_statistics(document_id).max_freq)
     return normalized_tf
 
 
@@ -33,7 +33,7 @@ def get_normalized_log_tf(term: str, document_id: int, frequency_inverted_index:
                           collection_stats: CollectionStatistics) -> float:
     """ Get the log frequency of the term normalized using the average frequency of the document"""
     log_tf = get_log_tf(term, document_id, frequency_inverted_index)
-    normalized_log_tf = log_tf / (1 + log(collection_stats[document_id].avg_freq))
+    normalized_log_tf = log_tf / (1 + log(collection_stats.get_document_statistics(document_id).avg_freq))
     return normalized_log_tf
 
 

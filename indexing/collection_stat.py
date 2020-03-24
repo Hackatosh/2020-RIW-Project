@@ -12,17 +12,17 @@ class CollectionStatistics:
         self.__nbr_documents = 0
         self.__documents_stats: Dict[id, DocumentStatistics] = {}
 
-    def __getitem__(self, key: int) -> DocumentStatistics:
-        return self.__documents_stats[key]
-
-    @property
-    def nbr_documents(self):
-        return self.__nbr_documents
+    def get_document_statistics(self, document_id: int) -> DocumentStatistics:
+        return self.__documents_stats[document_id]
 
     def add_document_statistics(self, document_id: int, document_stats: DocumentStatistics):
         if document_id not in self.__documents_stats:
             self.__nbr_documents += 1
         self.__documents_stats[document_id] = document_stats
+
+    @property
+    def nbr_documents(self):
+        return self.__nbr_documents
 
     def save_to_file(self, absolute_path: str) -> None:
         """ Serialize the object and save it at the given absolute path"""
