@@ -4,22 +4,35 @@ from common.typing import FrequencyInvertedIndex
 from indexing.collection_stat import CollectionStatistics
 from models.query import Query
 
+available_weighting_schemes_query = ["binary", "frequency"]
+available_weighting_schemes_document = ["binary", "frequency", "tf_idf_normalize", "tf_idf_logarithmic",
+                                        "tf_idf_logarithmic_normalize"]
+
 
 def query_vectorial_model(query: Query, inverted_index: FrequencyInvertedIndex, collection_stats: CollectionStatistics,
                           weighting_scheme_document: str, weighting_scheme_query: str):
+    # Input validation
+    if weighting_scheme_document not in available_weighting_schemes_document:
+        raise ValueError("Unknown document weighting scheme")
+    if weighting_scheme_query not in available_weighting_schemes_query:
+        raise ValueError("Unknown query weighting scheme")
+
     relevant_docs = {}
     counter_query = Counter()
     nbr_documents = collection_stats.nbr_documents
     norm_query = 0
+
     for term in query:
         if term in inverted_index:
-            w_term_query = 0.
+
+            w_term_query = 0
             counter_query.update([term])
             if weighting_scheme_query == "binary":
                 w_term_query = 1
             if weighting_scheme_query == "frequency":
                 w_term_query = counter_query[term]
             norm_query = norm_query + w_term_query * w_term_query
+
             for doc in inverted_index[term]:
                 w_term_doc = 0.
                 relevant_docs[doc] = 0.
