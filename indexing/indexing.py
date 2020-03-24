@@ -1,11 +1,13 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from common.helpers import generate_file_paths, serialize_object, deserialize_object
 from common.typing import BasicInvertedIndex, FrequencyInvertedIndex, FrequencyInvertedIndexWithPos, InvertedIndex
 from common.idmap import IdMap
 
-
 # DOCUMENT PARSING
+from indexing.collection_stat import CollectionStatistics
+from indexing.document_stat import DocumentStatistics
+
 
 def parse_document(document_absolute_path: str) -> List[str]:
     """Given the absolute path to the document, returns the list of the filtered and tokenized words, in their order of appearance.
@@ -22,13 +24,16 @@ def parse_document(document_absolute_path: str) -> List[str]:
 
 # INVERTED INDEX BUILDING
 
-def build_inverted_index_basic(collection_directory: str) -> Tuple[BasicInvertedIndex, IdMap]:
+def build_inverted_index_basic(collection_directory: str, generate_stats: bool = True) -> \
+        Tuple[BasicInvertedIndex, IdMap, Optional[CollectionStatistics]]:
     """ Build the most basic inverted index possible : the index indicates in which documents every word
     appears. To lessen the size of the inverted index, we use document ids instead of document path / name.
-    The mapping between ids and documents path (relative to the collection_directory) is stored in IdMap."""
+    The mapping between ids and documents path (relative to the collection_directory) is stored in IdMap.
+    If generate_stats is set to True, it generates the collection statistics along with the index."""
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
+    collection_statistics = CollectionStatistics if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -38,17 +43,21 @@ def build_inverted_index_basic(collection_directory: str) -> Tuple[BasicInverted
                     inverted_index[term].append(document_id)
             else:
                 inverted_index[term] = [document_id]
-    return inverted_index, id_map
+        if generate_stats:
+            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+    return inverted_index, id_map, collection_statistics
 
 
-def build_frequency_inverted_index(collection_directory: str) -> Tuple[FrequencyInvertedIndex, IdMap]:
-    """ Build a frequency inverted index : the index indicates in which documents every word
-    appears and their number of appearances. To lessen the size of the inverted index,
-    we use document ids instead of document path / name. The mapping between ids and documents path (relative to
-    the collection_directory) is stored in IdMap."""
+def build_frequency_inverted_index(collection_directory: str, generate_stats: bool = True) -> \
+        Tuple[FrequencyInvertedIndex, IdMap, Optional[CollectionStatistics]]:
+    """ Build a frequency inverted index : the index indicates in which documents every word appears and their number of
+     appearances. To lessen the size of the inverted index, we use document ids instead of document path / name.
+     The mapping between ids and documents path (relative to the collection_directory) is stored in IdMap.
+     If generate_stats is set to True, it generates the collection statistics along with the index."""
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
+    collection_statistics = CollectionStatistics if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -61,17 +70,22 @@ def build_frequency_inverted_index(collection_directory: str) -> Tuple[Frequency
             else:
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = 1
-    return inverted_index, id_map
+        if generate_stats:
+            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+    return inverted_index, id_map, collection_statistics
 
 
-def build_frequency_inverted_index_with_pos(collection_directory: str) -> Tuple[FrequencyInvertedIndexWithPos, IdMap]:
+def build_frequency_inverted_index_with_pos(collection_directory: str, generate_stats: bool = True) -> \
+        Tuple[FrequencyInvertedIndexWithPos, IdMap, Optional[CollectionStatistics]]:
     """ Build a frequency inverted index with positions : the index indicates in which documents every word
     appears, their number of appearances and their position of appearance in the document.
     To lessen the size of the inverted index, we use document ids instead of document path / name. The mapping between
-    ids and documents path (relative to the collection_directory) is stored in IdMap."""
+    ids and documents path (relative to the collection_directory) is stored in IdMap.
+    If generate_stats is set to True, it generates the collection statistics along with the index."""
     file_paths = generate_file_paths(collection_directory)
     inverted_index = {}
     id_map = IdMap()
+    collection_statistics = CollectionStatistics if generate_stats else None
     for (absolute_path, relative_path) in file_paths:
         parsed_document = parse_document(absolute_path)
         document_id = id_map.insert_str(relative_path)
@@ -85,7 +99,9 @@ def build_frequency_inverted_index_with_pos(collection_directory: str) -> Tuple[
             else:
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = (1, [i])
-    return inverted_index, id_map
+        if generate_stats:
+            collection_statistics[document_id] = DocumentStatistics(parsed_document)
+    return inverted_index, id_map, collection_statistics
 
 
 # SERIALIZATION / DESERIALIZATION
