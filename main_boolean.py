@@ -9,16 +9,15 @@ from models.query import Query
     This script aims to test the basic boolean model.
 """
 
-if __name__ == '__main__':
 
+def test_boolean_model(imap_path: str, invind_path: str, collection_path: str, query_path: str) -> None:
+    """
+        This script aims to test the basic boolean model.
+        imap_path and invind_path are used for serialization and deserialization of the IdMap and the Inverted Index.
+        collection_path is the path to the main directory which contains all the documents of the collection.
+        query_path is the path to the text file containing the query.
+        """
     global_begin_time = time.time()
-
-    # CONFIG
-
-    imap_path = "TestSerialization/test1.imap"
-    invind_path = "TestSerialization/test1.ii"
-    collection_path = "Data/0"
-    query_path = "Queries/dev_queries/query.2"
 
     # INDEXING AND SERIALIZATION
 
@@ -66,3 +65,13 @@ if __name__ == '__main__':
 
     global_end_time = time.time()
     print(f"Script finished. Total time taken : {global_end_time - global_begin_time}")
+
+
+if __name__ == '__main__':
+
+    c_imap_path = "TestSerialization/test1.imap"
+    c_invind_path = "TestSerialization/test1.ii"
+    c_collection_path = "Data/0"
+    c_query_path = "Queries/dev_queries/query.2"
+
+    test_boolean_model(c_imap_path, c_invind_path, c_collection_path, c_query_path)

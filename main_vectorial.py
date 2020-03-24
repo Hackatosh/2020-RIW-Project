@@ -2,27 +2,22 @@ from common.idmap import IdMap
 from indexing.collection_stat import CollectionStatistics
 from indexing.indexing import save_inverted_index, build_frequency_inverted_index, load_frequency_inverted_index
 import time
-
 from models.query import Query
 from models.vectorial_model import query_vectorial_model
 
-"""
-    This script aims to test the vectorial model.
-"""
 
-if __name__ == '__main__':
+def test_vectorial_model(imap_path: str, invind_path: str, stats_path: str, collection_path: str, query_path: str,
+                         weighting_scheme_document: str, weighting_scheme_query: str) -> None:
+    """
+        This script aims to test the vectorial model.
+        imap_path, invind_path and stats_path are used for serialization and deserialization of the IdMap, the Inverted
+        Index and the Collection Statistics.
+        collection_path is the path to the main directory which contains all the documents of the collection.
+        query_path is the path to the text file containing the query.
+        weighting_scheme_document and weighting_scheme_query are the weighting used by the vectorial model.
+    """
 
     global_begin_time = time.time()
-
-    # CONFIG
-
-    imap_path = "TestSerialization/test1.imap"
-    invind_path = "TestSerialization/test1.ii"
-    stats_path = "TestSerialization/test1.stats"
-    collection_path = "Data/0"
-    query_path = "Queries/dev_queries/query.2"
-    weighting_scheme_document = "frequency"
-    weighting_scheme_query = "frequency"
 
     # INDEXING AND SERIALIZATION
 
@@ -74,3 +69,16 @@ if __name__ == '__main__':
 
     global_end_time = time.time()
     print(f"Script finished. Total time taken : {global_end_time - global_begin_time}")
+
+
+if __name__ == '__main__':
+    c_imap_path = "TestSerialization/test1.imap"
+    c_invind_path = "TestSerialization/test1.ii"
+    c_stats_path = "TestSerialization/test1.stats"
+    c_collection_path = "Data/0"
+    c_query_path = "Queries/dev_queries/query.2"
+    c_weighting_scheme_document = "frequency"
+    c_weighting_scheme_query = "frequency"
+
+    test_vectorial_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, c_query_path,
+                         c_weighting_scheme_document, c_weighting_scheme_query)
