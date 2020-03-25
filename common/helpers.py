@@ -1,5 +1,6 @@
 import os
-from typing import Iterator, Tuple
+import pickle
+from typing import Iterator, Tuple, Any
 
 
 def generate_file_paths(main_directory: str) -> Iterator[Tuple[str, str]]:
@@ -12,3 +13,19 @@ def generate_file_paths(main_directory: str) -> Iterator[Tuple[str, str]]:
             absolute_path = os.path.join(wd, dirpath, filename)
             relative_path = os.path.relpath(absolute_path, main_directory)
             yield absolute_path, relative_path
+
+
+def serialize_object(o: Any, absolute_path: str) -> None:
+    """ Serialize the object and save it at the given absolute path using the pickle module. For proper typing,
+    this must be wrapped."""
+    with open(absolute_path, "wb") as f:
+        pickle.dump(o, f)
+        f.close()
+
+
+def deserialize_object(absolute_path: str) -> Any:
+    """Deserialize the object located at the given absolute path using the pickle module. For proper typing,
+    this must be wrapped."""
+    with open(absolute_path, 'rb') as fb:
+        o = pickle.load(fb)
+        return o

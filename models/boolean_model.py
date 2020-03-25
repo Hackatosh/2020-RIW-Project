@@ -1,11 +1,9 @@
-from typing import List
-
 from common.idmap import IdMap
-from common.typing import BasicInvertedIndex
+from common.typing import BasicInvertedIndex, ResultsWithoutScore
 from models.query import Query
 
 
-def query_boolean_model(inverted_index: BasicInvertedIndex, id_map: IdMap, query: Query) -> List[str]:
+def query_boolean_model(inverted_index: BasicInvertedIndex, id_map: IdMap, query: Query) -> ResultsWithoutScore:
     """Handle the provided query using a boolean model : it returns the name of all the documents
     containing the terms of the query"""
     result_set = None

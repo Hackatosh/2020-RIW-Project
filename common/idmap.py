@@ -1,6 +1,8 @@
 import pickle
 from typing import Union
 
+from common.helpers import serialize_object, deserialize_object
+
 
 class IdMap:
     """Helper class to store a mapping from strings to ids."""
@@ -43,14 +45,10 @@ class IdMap:
             raise TypeError
 
     def save_to_file(self, absolute_path: str) -> None:
-        """ Serialize the object and save it at the given absolute path using the pickle module"""
-        with open(absolute_path, "wb") as f:
-            pickle.dump(self, f)
-            f.close()
+        """ Serialize the object and save it at the given absolute path"""
+        serialize_object(self, absolute_path)
 
     @staticmethod
     def load_id_map_file(absolute_path: str) -> "IdMap":
-        """Deserialize the IdMap object located at the given absolute path using the pickle module"""
-        with open(absolute_path, 'rb') as fb:
-            id_map = pickle.load(fb)
-            return id_map
+        """Deserialize the IdMap object located at the given absolute path"""
+        return deserialize_object(absolute_path)
