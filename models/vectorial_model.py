@@ -52,13 +52,13 @@ def query_vectorial_model(query: Query, inverted_index: FrequencyInvertedIndex, 
                     w_term_doc = get_tf(term, document_id, inverted_index)
                 if weighting_scheme_document == "tf_idf_normalize":
                     w_term_doc = get_normalized_tf(term, document_id, inverted_index, collection_stats) * \
-                                 get_idf(term, inverted_index, nbr_documents)
+                                 get_idf(term, inverted_index, collection_stats)
                 if weighting_scheme_document == "tf_idf_logarithmic":
                     w_term_doc = get_log_tf(term, document_id, inverted_index) * \
-                                 get_idf(term, inverted_index, nbr_documents)
+                                 get_idf(term, inverted_index, collection_stats)
                 if weighting_scheme_document == "tf_idf_logarithmic_normalize":
                     w_term_doc = get_normalized_log_tf(term, document_id, inverted_index, collection_stats) * \
-                                 get_idf(term, inverted_index, nbr_documents)
+                                 get_idf(term, inverted_index, collection_stats)
 
                 relevant_docs[document_id] += w_term_doc * w_term_query
     # Final sorting
