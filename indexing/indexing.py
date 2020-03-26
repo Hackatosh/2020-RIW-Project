@@ -1,13 +1,12 @@
 from typing import List, Tuple, Optional
-
 from common.helpers import generate_file_paths, serialize_object, deserialize_object
 from common.typing import BasicInvertedIndex, FrequencyInvertedIndex, FrequencyInvertedIndexWithPos, InvertedIndex
 from common.idmap import IdMap
-
-# DOCUMENT PARSING
 from indexing.collection_stat import CollectionStatistics
 from indexing.document_stat import DocumentStatistics
 
+
+# DOCUMENT PARSING
 
 def parse_document(document_absolute_path: str) -> List[str]:
     """Given the absolute path to the document, returns the list of the filtered and tokenized words, in their order of appearance.
@@ -44,7 +43,7 @@ def build_inverted_index_basic(collection_directory: str, generate_stats: bool =
             else:
                 inverted_index[term] = [document_id]
         if generate_stats:
-            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
+            collection_statistics.add_document_statistics(document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 
@@ -71,7 +70,7 @@ def build_frequency_inverted_index(collection_directory: str, generate_stats: bo
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = 1
         if generate_stats:
-            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
+            collection_statistics.add_document_statistics(document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 
@@ -100,7 +99,7 @@ def build_frequency_inverted_index_with_pos(collection_directory: str, generate_
                 inverted_index[term] = {}
                 inverted_index[term][document_id] = (1, [i])
         if generate_stats:
-            collection_statistics.add_document_statistics( document_id, DocumentStatistics(parsed_document))
+            collection_statistics.add_document_statistics(document_id, DocumentStatistics(parsed_document))
     return inverted_index, id_map, collection_statistics
 
 
