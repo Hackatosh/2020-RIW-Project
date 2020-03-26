@@ -5,18 +5,19 @@ from common.typing import ResultsWithoutScore, ResultsWithScore
 def parse_out_file(out_file_path: str, filter_folder: Optional[str] = None) -> ResultsWithoutScore:
     """Given the absolute path to the out file, returns the list of the relevant documents written in this file.
     If you do not want to keep the results corresponding to the whole dataset, you can provide a sub-folder which the
-    results should belong to using filter_folder"""
-    if filter_folder is not None and not filter_folder.startswith("/"):
+    results should belong to using filter_folder (has to be RELATIVE)"""
+    filter_folder_provided = filter_folder is not None and len(filter_folder) > 0
+    if filter_folder_provided and filter_folder.startswith("/"):
         raise ValueError("filter_folder should be a relative path like '0/'")
-    if filter_folder is not None and not filter_folder.endswith("/"):
+    if filter_folder_provided and not filter_folder.endswith("/"):
         filter_folder += "/"
     result = []
     with open(out_file_path, 'r') as f:
         line = f.readline()
         while line:
-            if filter_folder is None:
+            if not filter_folder_provided:
                 result.append(line)
-            if filter_folder is not None and line.startswith(filter_folder):
+            if filter_folder_provided and line.startswith(filter_folder):
                 result.append(line[len(filter_folder):])
             line = f.readline()
     return result
