@@ -21,7 +21,7 @@ class CollectionStatistics:
         self.__documents_stats[document_id] = document_stats
 
     @property
-    def nbr_documents(self):
+    def nbr_documents(self) -> int:
         return self.__nbr_documents
 
     def save_to_file(self, absolute_path: str) -> None:
