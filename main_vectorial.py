@@ -104,7 +104,7 @@ if __name__ == '__main__':
     c_out_file = "Queries/dev_output/1.out"
 
     # Weighting schemes
-    c_weighting_scheme_document = "frequency"
+    c_weighting_scheme_document = "okapi_bm_25"
     c_weighting_scheme_query = "frequency"
 
     test_vectorial_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, c_query_path,
