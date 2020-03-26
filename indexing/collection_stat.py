@@ -10,6 +10,7 @@ class CollectionStatistics:
 
     def __init__(self):
         self.__nbr_documents = 0
+        self.__avg_document_length = 0
         self.__documents_stats: Dict[id, DocumentStatistics] = {}
 
     def get_document_statistics(self, document_id: int) -> DocumentStatistics:
@@ -17,12 +18,19 @@ class CollectionStatistics:
 
     def add_document_statistics(self, document_id: int, document_stats: DocumentStatistics) -> None:
         if document_id not in self.__documents_stats:
+            # The order of those operations is important
+            self.__avg_document_length = (self.__avg_document_length*self.__nbr_documents + document_stats.length_doc) / \
+                                         (self.__nbr_documents + 1)
             self.__nbr_documents += 1
         self.__documents_stats[document_id] = document_stats
 
     @property
     def nbr_documents(self) -> int:
         return self.__nbr_documents
+
+    @property
+    def avg_document_length(self) -> int:
+        return self.__avg_document_length
 
     def save_to_file(self, absolute_path: str) -> None:
         """ Serialize the object and save it at the given absolute path"""
