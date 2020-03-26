@@ -16,9 +16,9 @@ def parse_out_file(out_file_path: str, filter_folder: Optional[str] = None) -> R
         line = f.readline()
         while line:
             if not filter_folder_provided:
-                result.append(line)
+                result.append(line.rstrip())
             if filter_folder_provided and line.startswith(filter_folder):
-                result.append(line[len(filter_folder):])
+                result.append(line[len(filter_folder):].rstrip())
             line = f.readline()
     return result
 
