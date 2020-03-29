@@ -2,11 +2,11 @@ from common.idmap import IdMap
 from common.typing import FrequencyInvertedIndex, ResultsWithScore
 from indexing.collection_stat import CollectionStatistics
 from models.query import Query
-from models.weighting import get_tf, get_normalized_tf, get_idf, get_log_tf, get_normalized_log_tf
+from models.weighting import get_tf, get_normalized_tf, get_idf, get_log_tf, get_normalized_log_tf, get_okapi_bm_25
 
 available_weighting_schemes_query = ["binary", "frequency"]
 available_weighting_schemes_document = ["binary", "frequency", "tf_idf_normalize", "tf_idf_logarithmic",
-                                        "tf_idf_logarithmic_normalize"]
+                                        "tf_idf_logarithmic_normalize","okapi_bm_25"]
 
 
 def query_vectorial_model(query: Query, inverted_index: FrequencyInvertedIndex, id_map: IdMap,
@@ -21,7 +21,6 @@ def query_vectorial_model(query: Query, inverted_index: FrequencyInvertedIndex, 
         raise ValueError("Unknown query weighting scheme")
 
     relevant_docs = {}
-    nbr_documents = collection_stats.nbr_documents
     norm_query = 0
     query_dict = {}
     for term in query:
@@ -52,14 +51,16 @@ def query_vectorial_model(query: Query, inverted_index: FrequencyInvertedIndex, 
                     w_term_doc = get_tf(term, document_id, inverted_index)
                 if weighting_scheme_document == "tf_idf_normalize":
                     w_term_doc = get_normalized_tf(term, document_id, inverted_index, collection_stats) * \
-                                 get_idf(term, inverted_index, nbr_documents)
+                                 get_idf(term, inverted_index, collection_stats)
                 if weighting_scheme_document == "tf_idf_logarithmic":
                     w_term_doc = get_log_tf(term, document_id, inverted_index) * \
-                                 get_idf(term, inverted_index, nbr_documents)
+                                 get_idf(term, inverted_index, collection_stats)
                 if weighting_scheme_document == "tf_idf_logarithmic_normalize":
                     w_term_doc = get_normalized_log_tf(term, document_id, inverted_index, collection_stats) * \
-                                 get_idf(term, inverted_index, nbr_documents)
-
+                                 get_idf(term, inverted_index, collection_stats)
+                if weighting_scheme_document == "okapi_bm_25":
+                    w_term_doc = get_okapi_bm_25(term, document_id, inverted_index, collection_stats) * \
+                                 get_idf(term, inverted_index, collection_stats)
                 relevant_docs[document_id] += w_term_doc * w_term_query
     # Final sorting
     ordered_relevant_docs = []
