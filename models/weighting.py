@@ -37,6 +37,15 @@ def get_normalized_log_tf(term: str, document_id: int, frequency_inverted_index:
     return normalized_log_tf
 
 
+def get_okapi_bm_25(term: str, document_id: int, frequency_inverted_index: FrequencyInvertedIndex,
+                    collection_stats: CollectionStatistics, k1: float = 1.6, b: float = 0.75) -> float:
+    tf = get_tf(term, document_id, frequency_inverted_index)
+    d_length = collection_stats.get_document_statistics(document_id).length_doc
+    avg_length = collection_stats.avg_document_length
+    okapi = (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (d_length / avg_length)))
+    return okapi
+
+
 def get_idf(term: str, frequency_inverted_index: FrequencyInvertedIndex,
             collection_stats: CollectionStatistics) -> float:
     """Global indicator of the term frequency in the whole corpus. This can be used for weigthing.-"""
