@@ -5,6 +5,8 @@ import time
 
 def train_word2vec_model(collection_directory: str) -> Word2Vec:
 
+    """Train a word2vec model on the given dataset"""
+
     file_paths = generate_file_paths(collection_directory)
     corpus = []
     for (absolute_path, relative_path) in file_paths:
@@ -18,6 +20,9 @@ def train_word2vec_model(collection_directory: str) -> Word2Vec:
 
 
 def save_word2vec_model(model: Word2Vec, absolute_path: str) -> None:
+
+    """Save the vectors of a word2vec model (take twice less space than the entire model)"""
+
     model.wv.save(absolute_path)
 
 
