@@ -6,12 +6,16 @@ from subprocess import call
 
 parser = argparse.ArgumentParser(prog='DuckDuckQwant')
 parser.add_argument('--version', action='version', version='%(prog)s 0.1')
-parser.add_argument('query', nargs="+", help="your query. Example : how to replace google")
-parser.add_argument('--engine', default="vect",help="choose your search engine. It must be in this list : 'bool', 'vect', 'wordtovec'. Default is 'vect'",
+parser.add_argument('query', help="your query OR the path to your query file. \
+Example of query : 'how to replace google'. Example of path : \
+'Queries/dev_queries/query.1'. Flag --file must be added in order for the \
+argument to be considered as a path.")
+parser.add_argument('--engine', default="vect",help="choose your search engine.\
+ It must be in this list : 'bool', 'vect', 'wordtovec'. Default is 'vect'",
                     choices=['bool', 'vect', 'wordtovec'])
-
+parser.add_argument("--file", nargs="?", default=False, const=True, help="Add \
+this flag if you are using a file as an input for your queries.")
 args = parser.parse_args()
-
 
 # Serialization paths
 c_imap_path = "TestSerialization/test1.imap"
