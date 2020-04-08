@@ -36,12 +36,11 @@ def query_word2vec_model(query: Query, inverted_index: FrequencyInvertedIndex, i
             # Weighting of query terms
             w_term_query = query_dict[term]
             norm_query = norm_query + w_term_query * w_term_query
-            similar_terms = word2vec_vectors.most_similar(term)  # top 10 similar terms based on word2vec model
+            similar_terms = word2vec_vectors.most_similar(term, topn=5)  # top 5 similar terms based on word2vec model
             similar_terms.append((term, 1))  # add the original term to the list
             word2vec_normalization = sum([sigmoid(similarity) for _, similarity in similar_terms])
             # weighting similar to vectorial model but adding word2vec similarity for each similar term
             for similar_term, similarity in similar_terms:
-                print(similarity)
                 if similar_term in inverted_index:
                     for document_id in inverted_index[similar_term].keys():
                         if document_id not in relevant_docs:
