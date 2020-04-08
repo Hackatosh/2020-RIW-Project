@@ -1,7 +1,7 @@
 import os
 import pickle
 from typing import Iterator, Tuple, Any
-
+from models.query import Query
 
 def generate_file_paths(main_directory: str) -> Iterator[Tuple[str, str]]:
     """Recursively browse the directory provided and create a generator containing Tuples composed of
@@ -29,3 +29,9 @@ def deserialize_object(absolute_path: str) -> Any:
     with open(absolute_path, 'rb') as fb:
         o = pickle.load(fb)
         return o
+
+def load_query(absolute_path: str, consider_as_path: bool) -> Query:
+    if consider_as_path:
+        return Query.build_from_file(absolute_path)
+    else:
+        return Query(absolute_path)

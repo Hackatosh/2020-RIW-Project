@@ -10,11 +10,13 @@ parser.add_argument('query', help="your query OR the path to your query file. \
 Example of query : 'how to replace google'. Example of path : \
 'Queries/dev_queries/query.1'. Flag --file must be added in order for the \
 argument to be considered as a path.")
-parser.add_argument('--engine', default="vect",help="choose your search engine.\
+parser.add_argument('--engine', '-e', default="vect",help="choose your search engine.\
  It must be in this list : 'bool', 'vect', 'wordtovec'. Default is 'vect'",
                     choices=['bool', 'vect', 'wordtovec'])
-parser.add_argument("--file", nargs="?", default=False, const=True, help="Add \
+parser.add_argument("--file-path", nargs="?", default=False, const=True, help="Add \
 this flag if you are using a file as an input for your queries.")
+
+
 args = parser.parse_args()
 
 # Serialization paths
@@ -36,8 +38,8 @@ if args.engine == "vect":
     c_weighting_scheme_document = "okapi_bm_25"
     c_weighting_scheme_query = "frequency"
 
-    test_vectorial_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, c_query_path,
-                         c_out_file, c_filter_folder_out_file, c_weighting_scheme_document, c_weighting_scheme_query)
+    test_vectorial_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, args.query,
+                         c_out_file, c_filter_folder_out_file, c_weighting_scheme_document, c_weighting_scheme_query, args.file_path)
 
 if args.engine == "bool":
-    test_boolean_model(c_imap_path, c_invind_path, c_collection_path, c_query_path, c_out_file, c_filter_folder_out_file)
+    test_boolean_model(c_imap_path, c_invind_path, c_collection_path, args.query, c_out_file, c_filter_folder_out_file, args.file_path)
