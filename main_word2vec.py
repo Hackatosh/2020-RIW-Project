@@ -70,6 +70,6 @@ if __name__ == '__main__':
     c_stats_path = "TestSerialization/test1.stats"
     c_collection_path = "Data/0"
     c_query_path = "Queries/dev_queries/query.2"
-    c_word2vec_path = "indexing/word2vec.kv"
+    c_word2vec_path = "indexing/word2vec_google.kv"
 
     test_word2vec_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, c_query_path, c_word2vec_path)
