@@ -75,4 +75,4 @@ if __name__ == '__main__':
     path_to_google_model = 'GoogleNews-vectors-negative300.bin'
     path_to_model = 'word2vec_google.kv'
     model = clip_google_word2vec_model(collection_directory, path_to_google_model)
-    #save_word2vec_model(model, path_to_model)
+    model.save('word2vec_google.kv')
