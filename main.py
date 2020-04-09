@@ -18,13 +18,14 @@ parser.add_argument('--engine', '-e', default="vect",help="choose your search en
                     choices=['bool', 'vect', 'wordtovec'])
 parser.add_argument("--file-path", nargs="?", default=False, const=True, help="Add \
 this flag if you are using a file as an input for your queries.")
-parser.add_argument("--index", choices=['basic', 'freq', 'pos'],
+parser.add_argument("--index", nargs="?", const="freq", choices=['basic', 'freq', 'pos'],
 help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
 parser.add_argument("--limit", "-l", type=int, default=20, help="Specify the \
 number of results display. Default is 20")
 
 args = parser.parse_args()
-
+if not (args.query or args.index):
+    parser.error("Please specify at least --query and/or --index flags")
 # Serialization paths
 c_imap_path = "TestSerialization/test1.imap"
 c_invind_path = "TestSerialization/test1.ii"
@@ -37,19 +38,15 @@ c_query_path = "Queries/dev_queries/query.1"
 c_out_file = "Queries/dev_output/1.out"
 
 # INDEXING AND SERIALIZATION
-try:
-    if args.index =="basic":
-        inverted_index, id_map, _ = build_inverted_index_basic(c_collection_path)
-        id_map.save_to_file(c_imap_path)
-        save_inverted_index(inverted_index, c_invind_path)
-
-    elif args.index == "freq":
-        inverted_index, id_map, collection_stats = build_frequency_inverted_index(c_collection_path)
-        id_map.save_to_file(c_imap_path)
-        save_inverted_index(inverted_index, c_invind_path)
-        collection_stats.save_to_file(c_stats_path)
-except Exception as e:
-    print(e)
+if args.index =="basic":
+    inverted_index, id_map, _ = build_inverted_index_basic(c_collection_path)
+    id_map.save_to_file(c_imap_path)
+    save_inverted_index(inverted_index, c_invind_path)
+elif args.index == "freq":
+    inverted_index, id_map, collection_stats = build_frequency_inverted_index(c_collection_path)
+    id_map.save_to_file(c_imap_path)
+    save_inverted_index(inverted_index, c_invind_path)
+    collection_stats.save_to_file(c_stats_path)
 print("Starting serializing...")
 
 
