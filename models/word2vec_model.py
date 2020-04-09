@@ -7,11 +7,10 @@ from gensim.models import KeyedVectors
 from math import exp
 
 
-def sigmoid(x):
-
-    """Sigmoid function used to discriminate further between similarities below 0.5 and above 0.5"""
-
-    return 1 / (1 + exp(-x))
+def sigmoid(x, k=20):
+    """Sigmoid function used to discriminate further between similarities below 0.5 and above 0.5. Higher k means
+    stronger discrimination."""
+    return 1 / (1 + exp(-k*(x-0.5)))
 
 
 def query_word2vec_model(query: Query, inverted_index: FrequencyInvertedIndex, id_map: IdMap,
