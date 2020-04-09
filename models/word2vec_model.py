@@ -7,7 +7,7 @@ from gensim.models import KeyedVectors
 from math import exp
 
 
-def sigmoid(x, k=20):
+def sigmoid(x, k=15):
     """Sigmoid function used to discriminate further between similarities below 0.5 and above 0.5. Higher k means
     stronger discrimination."""
     return 1 / (1 + exp(-k*(x-0.5)))
