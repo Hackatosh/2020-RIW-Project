@@ -13,6 +13,8 @@ requirements:
 
 * [Python 3.8](https://www.python.org/)
 
+The project also uses the Python packages `numpy` and `gensim`.
+
 ### Use the Search Engine
 
 WIP !
