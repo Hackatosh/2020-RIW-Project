@@ -1,7 +1,6 @@
 from gensim.models import Word2Vec, KeyedVectors
-from common.helpers import generate_file_paths, parse_document
+from common.helpers import generate_file_paths, parse_document, get_vocabulary
 import time
-import tqdm
 import numpy as np
 
 
@@ -21,7 +20,7 @@ def train_word2vec_model_from_collection(collection_directory: str) -> Word2Vec:
     return model
 
 
-def restrict_w2v(w2v, restricted_word_set):
+def restrict_w2v(w2v: KeyedVectors, restricted_word_set: set):
     
     """Restrict a word2vec model to the restricted_word_set"""
     
@@ -29,7 +28,7 @@ def restrict_w2v(w2v, restricted_word_set):
     new_vocab = {}
     new_index2entity = []
 
-    for i in tqdm.trange(len(w2v.vocab)):
+    for i in range(len(w2v.vocab)):
         word = w2v.index2entity[i]
         vec = w2v.vectors[i]
         vocab = w2v.vocab[word]
@@ -45,22 +44,15 @@ def restrict_w2v(w2v, restricted_word_set):
     w2v.index2word = new_index2entity
 
 
-def clip_google_word2vec_model(collection_directory: str, path_to_google_model: str) -> Word2Vec:
+def clip_google_word2vec_model(collection_directory: str, path_to_google_model: str) -> KeyedVectors:
 
     """Clip the Google word2vec model (far too heavy) so it fits just our collection"""
 
-    file_paths = generate_file_paths(collection_directory)
-    vocabulary = set()
-    for (absolute_path, relative_path) in tqdm.tqdm(file_paths):
-        parsed_document = parse_document(absolute_path)
-        for word in parsed_document:
-            if not(word in vocabulary):
-                vocabulary.add(word)
-
-    model = KeyedVectors.load_word2vec_format(path_to_google_model, binary=True)
-    restrict_w2v(model, vocabulary)
-    model.init_sims()
-    return model
+    vocabulary = get_vocabulary(collection_directory)
+    vectors = KeyedVectors.load_word2vec_format(path_to_google_model, binary=True)
+    restrict_w2v(vectors, vocabulary)
+    vectors.init_sims()
+    return vectors
 
 
 def save_word2vec_model(model: Word2Vec, absolute_path: str) -> None:
@@ -74,5 +66,5 @@ if __name__ == '__main__':
     collection_directory = '../Data'
     path_to_google_model = 'GoogleNews-vectors-negative300.bin'
     path_to_model = 'word2vec_google.kv'
-    model = clip_google_word2vec_model(collection_directory, path_to_google_model)
-    model.save('word2vec_google.kv')
+    vectors = clip_google_word2vec_model(collection_directory, path_to_google_model)
+    vectors.save('word2vec_google.kv')

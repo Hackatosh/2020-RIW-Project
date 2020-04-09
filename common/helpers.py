@@ -45,3 +45,14 @@ def deserialize_object(absolute_path: str) -> Any:
     with open(absolute_path, 'rb') as fb:
         o = pickle.load(fb)
         return o
+
+
+def get_vocabulary(main_directory: str) -> set:
+    """Return a set containing all the different words in the dataset : the vocabulary"""
+    file_paths = generate_file_paths(main_directory)
+    vocabulary = set()
+    for (absolute_path, relative_path) in file_paths:
+        parsed_document = parse_document(absolute_path)
+        for word in parsed_document:
+            vocabulary.add(word)
+    return vocabulary
