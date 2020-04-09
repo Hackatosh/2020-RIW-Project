@@ -20,9 +20,10 @@ def train_word2vec_model_from_collection(collection_directory: str) -> Word2Vec:
     return model
 
 
-def restrict_w2v(w2v: KeyedVectors, restricted_word_set: set):
+def restrict_w2v(w2v: KeyedVectors, restricted_words: Set[str]) -> None:
     
-    """Restrict a word2vec model to the restricted_word_set"""
+    """Restrict a word2vec model to the restricted_words.
+    The values are directly changed on the provided deserialized word2vec model."""
     
     new_vectors = []
     new_vocab = {}
@@ -32,7 +33,7 @@ def restrict_w2v(w2v: KeyedVectors, restricted_word_set: set):
         word = w2v.index2entity[i]
         vec = w2v.vectors[i]
         vocab = w2v.vocab[word]
-        if word in restricted_word_set:
+        if word in restricted_words:
             vocab.index = len(new_index2entity)
             new_index2entity.append(word)
             new_vocab[word] = vocab
