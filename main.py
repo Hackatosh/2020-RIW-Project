@@ -22,6 +22,8 @@ parser.add_argument("--index", nargs="?", const="freq", choices=['basic', 'freq'
 help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
 parser.add_argument("--limit", "-l", type=int, default=20, help="Specify the \
 number of results display. Default is 20")
+parser.add_argument("--ws-doc", help="Path to weighting scheme doc")
+parser.add_argument("--ws-query", help="Path to weighting scheme query")
 
 args = parser.parse_args()
 if not (args.query or args.index):
@@ -53,8 +55,8 @@ print("Starting serializing...")
 if args.engine == "vect":
 
     # Weighting schemes
-    c_weighting_scheme_document = "okapi_bm_25"
-    c_weighting_scheme_query = "frequency"
+    c_weighting_scheme_document = args.ws_doc if args.ws_doc else "okapi_bm_25"
+    c_weighting_scheme_query = args.ws_query if args.ws_query else "frequency"
 
     results = test_vectorial_model(c_imap_path, c_invind_path, c_stats_path, c_collection_path, args.query,
                          c_out_file, c_filter_folder_out_file, c_weighting_scheme_document, c_weighting_scheme_query, args.file_path)
