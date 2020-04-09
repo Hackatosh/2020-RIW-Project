@@ -1,6 +1,6 @@
 from typing import Optional
 
-from common.helpers import load_query
+from common.typing import ResultsWithScore
 from common.idmap import IdMap
 from indexing.collection_stat import CollectionStatistics
 from indexing.indexing import save_inverted_index, build_frequency_inverted_index, load_frequency_inverted_index
@@ -13,7 +13,7 @@ from models.vectorial_model import query_vectorial_model
 
 def test_vectorial_model(imap_path: str, invind_path: str, stats_path: str, collection_path: str, query_path: str,
                          out_file: str, filter_folder_out_file: Optional[str],
-                         weighting_scheme_document: str, weighting_scheme_query: str, query_path_given: bool) -> None:
+                         weighting_scheme_document: str, weighting_scheme_query: str, query_path_given: bool) -> ResultsWithScore:
     """
         This script aims to test the vectorial model.
         imap_path, invind_path and stats_path are used for serialization and deserialization of the IdMap, the Inverted
@@ -26,27 +26,6 @@ def test_vectorial_model(imap_path: str, invind_path: str, stats_path: str, coll
     """
 
     global_begin_time = time.time()
-
-    # INDEXING AND SERIALIZATION
-
-    print("Starting indexing...")
-    begin_time = time.time()
-
-    inverted_index, id_map, collection_stats = build_frequency_inverted_index(collection_path)
-
-    end_time = time.time()
-    print(f"Indexing finished. Time taken : {end_time - begin_time}")
-
-    print("Starting serializing...")
-    begin_time = time.time()
-
-    id_map.save_to_file(imap_path)
-    save_inverted_index(inverted_index, invind_path)
-    collection_stats.save_to_file(stats_path)
-
-    end_time = time.time()
-    print(f"Serialization finished. Time taken : {end_time - begin_time}")
-
     # DESERIALIZATION AND QUERY HANDLING
 
     print("Starting deserializing...")
@@ -62,14 +41,14 @@ def test_vectorial_model(imap_path: str, invind_path: str, stats_path: str, coll
     print("Starting querying...")
     begin_time = time.time()
 
-    query_loaded = load_query(query_path, query_path_given)
+    query_loaded = Query.load_query(query_path, query_path_given)
     results = query_vectorial_model(query_loaded, inverted_index_loaded, id_map_loaded, collection_stats_loaded,
                                     weighting_scheme_document,
                                     weighting_scheme_query)
 
-    print("Results :")
-    for result in results:
-        print(f"Document : {result[0]}, Score: {result[1]}")
+    #print("Results :")
+    #for result in results:
+    #    print(f"Document : {result[0]}, Score: {result[1]}")
 
     end_time = time.time()
     print(f"Querying finished. Time taken : {end_time - begin_time}")
@@ -89,7 +68,7 @@ def test_vectorial_model(imap_path: str, invind_path: str, stats_path: str, coll
 
     global_end_time = time.time()
     print(f"Script finished. Total time taken : {global_end_time - global_begin_time}")
-
+    return results
 
 if __name__ == '__main__':
     # Serialization paths

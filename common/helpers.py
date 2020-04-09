@@ -29,9 +29,3 @@ def deserialize_object(absolute_path: str) -> Any:
     with open(absolute_path, 'rb') as fb:
         o = pickle.load(fb)
         return o
-
-def load_query(absolute_path: str, consider_as_path: bool) -> Query:
-    if consider_as_path:
-        return Query.build_from_file(absolute_path)
-    else:
-        return Query(absolute_path)

@@ -1,6 +1,5 @@
 from typing import Optional
 
-from common.helpers import load_query
 from common.idmap import IdMap
 from indexing.indexing import build_inverted_index_basic, save_inverted_index, load_basic_inverted_index
 import time
@@ -59,7 +58,7 @@ def test_boolean_model(imap_path: str, invind_path: str, collection_path: str, q
     print("Starting querying...")
     begin_time = time.time()
 
-    query_loaded = load_query(query_path, query_path_given)
+    query_loaded = Query.load_query(query_path, query_path_given)
 
     results = query_boolean_model(inverted_index_loaded, id_map_loaded, query_loaded)
 
@@ -94,7 +93,7 @@ if __name__ == '__main__':
     c_invind_path = "TestSerialization/test1.ii"
 
     # Collection, queries and out
-    c_collection_path = "Data/0"
+    c_collection_path = "Data"
     c_filter_folder_out_file = "0"
     c_query_path = "Queries/dev_queries/query.1"
     c_out_file = "Queries/dev_output/1.out"
