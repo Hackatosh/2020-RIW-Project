@@ -66,8 +66,11 @@ def generate_parser() -> Any:
     help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
     parser.add_argument("--limit", "-l", type=int, default=20, help="Specify the \
     number of results display. Default is 20")
-    parser.add_argument("--ws-doc", help="Path to weighting scheme doc")
-    parser.add_argument("--ws-query", help="Path to weighting scheme query")
+    parser.add_argument("--ws-doc", help="Path to weighting scheme doc for \
+    vectorial model")
+    parser.add_argument("--ws-query", help="Path to weighting scheme query for \
+    vectorial model")
+    parser.add_argument("--kv-vect", help="Path to word2vec model")
     parser.add_argument("--test", nargs="?", default=False, const=True,
                 help="Add this flag if you wish to run the testing routine")
     return parser
