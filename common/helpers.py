@@ -55,7 +55,7 @@ def generate_parser() -> Any:
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('--query', '-q', help="your query OR the path to your query file. \
     Example of query : 'how to replace google'. Example of path : \
-    'Queries/dev_queries/query.1'. Flag --file must be added in order for the \
+    'Queries/dev_queries/query.1'. Flag --file-path must be added in order for the \
     argument to be considered as a path.")
     parser.add_argument('--engine', '-e', default="vect",help="choose your search engine.\
      It must be in this list : 'bool', 'vect', 'wordtovec'. Default is 'vect'",
@@ -64,11 +64,12 @@ def generate_parser() -> Any:
     this flag if you are using a file as an input for your queries.")
     parser.add_argument("--index", nargs="?", const="freq", choices=['basic', 'freq', 'pos'],
     help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
+    parser.add_argument("--output", "-o", help="output file")
     parser.add_argument("--limit", "-l", type=int, default=20, help="Specify the \
     number of results display. Default is 20")
-    parser.add_argument("--ws-doc", help="Path to weighting scheme doc for \
+    parser.add_argument("--ws-doc", default="okapi_bm_25", help="Path to weighting scheme doc for \
     vectorial model")
-    parser.add_argument("--ws-query", help="Path to weighting scheme query for \
+    parser.add_argument("--ws-query", default="frequency", help="Path to weighting scheme query for \
     vectorial model")
     parser.add_argument("--kv-vect", help="Path to word2vec model")
     parser.add_argument("--test", nargs="?", default=False, const=True,
