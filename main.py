@@ -25,12 +25,12 @@ def build_index(name_index: str) -> Any:
     """Creates the index given the name of the index."""
     print("Starting indexing...")
 
-    if args.index =="basic":
+    if name_index =="basic":
         inverted_index, id_map, _ = build_inverted_index_basic(c_collection_path)
 
         id_map.save_to_file(c_imap_path_basic)
         save_inverted_index(inverted_index, c_invind_path_basic)
-    elif args.index == "freq":
+    elif name_index == "freq":
         inverted_index, id_map, collection_stats = build_frequency_inverted_index(c_collection_path)
 
         id_map.save_to_file(c_imap_path_freq)
@@ -41,17 +41,17 @@ def build_index(name_index: str) -> Any:
 
 def run_query(query: str, engine: str, file_path:bool) -> Any:
     """Runs query routine"""
-    if args.engine in ["vect", "wordtovec"]:
+    if engine in ["vect", "wordtovec"]:
 
         id_map_loaded = IdMap.load_id_map_file(c_imap_path_freq)
         inverted_index_loaded = load_frequency_inverted_index(c_invind_path_freq)
         collection_stats_loaded = CollectionStatistics.load_collection_statistics_file(c_stats_path_freq)
 
-        query_loaded = Query.load_query(args.query, args.file_path)
-        if args.engine == "vect":
+        query_loaded = Query.load_query(query, file_path)
+        if engine == "vect":
             results = query_vectorial_model(query_loaded, inverted_index_loaded, id_map_loaded, collection_stats_loaded,
                                     args.ws_doc, args.ws_query)
-        elif args.engine == "wordtovec":
+        elif engine == "wordtovec":
             word2vec_vectors = KeyedVectors.load(args.kv_vect)
             results = query_word2vec_model(query_loaded, inverted_index_loaded, id_map_loaded, collection_stats_loaded,
                                    word2vec_vectors)
@@ -59,11 +59,11 @@ def run_query(query: str, engine: str, file_path:bool) -> Any:
         for i in range(args.limit):
             print("Document : {}, Score : {}".format(results[i][0], results[i][1]))
 
-    if args.engine == "bool":
+    if engine == "bool":
         id_map_loaded = IdMap.load_id_map_file(c_imap_path_basic)
         inverted_index_loaded = load_basic_inverted_index(c_invind_path_basic)
 
-        query_loaded = Query.load_query(args.query, args.file_path)
+        query_loaded = Query.load_query(query, file_path)
         results = query_boolean_model(inverted_index_loaded, id_map_loaded, query_loaded)
 
         for i in range(args.limit):
