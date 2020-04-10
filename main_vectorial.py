@@ -79,8 +79,8 @@ if __name__ == '__main__':
     # Collection, queries and out
     c_collection_path = "Data/0"
     c_filter_folder_out_file = "0"
-    c_query_path = "Queries/dev_queries/query.1"
-    c_out_file = "Queries/dev_output/1.out"
+    c_query_path = "Queries/dev_queries/query.2"
+    c_out_file = "Queries/dev_output/2.out"
 
     # Weighting schemes
     c_weighting_scheme_document = "okapi_bm_25"

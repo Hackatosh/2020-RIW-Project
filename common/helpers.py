@@ -1,8 +1,25 @@
 import os
 import pickle
-from typing import Iterator, Tuple, Any
+from typing import Iterator, Tuple, Any, List
 from models.query import Query
 import argparse
+
+
+# DOCUMENT PARSING
+
+def parse_document(document_absolute_path: str) -> List[str]:
+    """Given the absolute path to the document, returns the list of the filtered and tokenized words, in their order
+    of appearance. For now, as the words are already tokenized and there is no stop word list, it just split every
+    line of the file. """
+    result = []
+    with open(document_absolute_path, 'r') as f:
+        line = f.readline()
+        while line:
+            parsed = line.split()
+            result += parsed
+            line = f.readline()
+    return result
+
 
 def generate_file_paths(main_directory: str) -> Iterator[Tuple[str, str]]:
     """Recursively browse the directory provided and create a generator containing Tuples composed of
@@ -54,3 +71,13 @@ def generate_parser() -> Any:
     parser.add_argument("--test", nargs="?", default=False, const=True,
                 help="Add this flag if you wish to run the testing routine")
     return parser
+
+def get_vocabulary(main_directory: str) -> set:
+    """Return a set containing all the different words in the dataset : the vocabulary"""
+    file_paths = generate_file_paths(main_directory)
+    vocabulary = set()
+    for (absolute_path, relative_path) in file_paths:
+        parsed_document = parse_document(absolute_path)
+        for word in parsed_document:
+            vocabulary.add(word)
+    return vocabulary
