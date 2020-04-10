@@ -1,5 +1,6 @@
 from typing import Optional
 
+from common.typing import ResultsWithoutScore
 from common.idmap import IdMap
 from indexing.indexing import build_inverted_index_basic, save_inverted_index, load_basic_inverted_index
 import time
@@ -14,7 +15,7 @@ from models.query import Query
 
 
 def test_boolean_model(imap_path: str, invind_path: str, collection_path: str, query_path: str,
-                       out_file: str, filter_folder_out_file: Optional[str],query_path_given: bool) -> None:
+                       out_file: str, filter_folder_out_file: Optional[str],query_path_given: bool) -> ResultsWithoutScore:
     """
         This script aims to test the basic boolean model.
         imap_path and invind_path are used for serialization and deserialization of the IdMap and the Inverted Index.
@@ -62,10 +63,6 @@ def test_boolean_model(imap_path: str, invind_path: str, collection_path: str, q
 
     results = query_boolean_model(inverted_index_loaded, id_map_loaded, query_loaded)
 
-    print("Results :")
-    for result in results:
-        print(result)
-
     end_time = time.time()
     print(f"Querying finished. Time taken : {end_time - begin_time}")
 
@@ -84,7 +81,7 @@ def test_boolean_model(imap_path: str, invind_path: str, collection_path: str, q
 
     global_end_time = time.time()
     print(f"Script finished. Total time taken : {global_end_time - global_begin_time}")
-
+    return results
 
 if __name__ == '__main__':
 
