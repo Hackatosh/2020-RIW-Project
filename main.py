@@ -23,8 +23,8 @@ c_imap_path_freq = "Serialization/freq.imap"
 c_invind_path_freq = "Serialization/freq.ii"
 
 # Collection and Word2Vec Google Model
-c_collection_path = "Data"
-c_filter_folder_out_file = None  # Use results for the whole collection to do the evaluation
+c_collection_path = "Data/0"
+c_filter_folder_out_file = "0" #None  # Use results for the whole collection to do the evaluation
 
 
 def build_index(index: str) -> Any:
@@ -109,9 +109,9 @@ if args.test:
     if not (args.index and args.query and args.output):
         raise ValueError("To run the test routine, you must indicate the following arguments : index, query and output")
         # The other arguments have default value in the parser
-    run_test_routine(args.index, args.query, args.is_file_path, args.limit, args.engine, args.output, **vars(args))
+    run_test_routine(**vars(args))
 else:
     if args.index:
         build_index(args.index)
     if args.query:
-        run_query(args.query, args.file_path, args.limit, args.engine, **vars(args))
+        run_query(**vars(args))
