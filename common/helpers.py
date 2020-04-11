@@ -1,8 +1,7 @@
 import os
 import pickle
-from typing import Iterator, Tuple, Any, List
-from models.query import Query
-import argparse
+from typing import Iterator, Tuple, Any, List, Set
+from argparse import ArgumentParser
 
 
 # DOCUMENT PARSING
@@ -48,36 +47,38 @@ def deserialize_object(absolute_path: str) -> Any:
         o = pickle.load(fb)
         return o
 
-def generate_parser() -> Any:
+
+def generate_parser() -> ArgumentParser:
     """ Generates the parser for the command line argument of the research
     tool"""
-    parser = argparse.ArgumentParser(prog='DuckDuckQwant')
+    parser = ArgumentParser(prog='QwuckQwuckDant')
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('--query', '-q', help="your query OR the path to your query file. \
     Example of query : 'how to replace google'. Example of path : \
-    'Queries/dev_queries/query.1'. Flag --file-path must be added in order for the \
+    'Queries/dev_queries/query.1'. Flag --is-file-path must be added in order for the \
     argument to be considered as a path.")
-    parser.add_argument('--engine', '-e', default="vect",help="choose your search engine.\
+    parser.add_argument('--engine', '-e', default="vect", help="choose your search engine.\
      It must be in this list : 'bool', 'vect', 'wordtovec'. Default is 'vect'",
                         choices=['bool', 'vect', 'wordtovec'])
-    parser.add_argument("--file-path", nargs="?", default=False, const=True, help="Add \
+    parser.add_argument("--is-file-path", nargs="?", default=False, const=True, help="Add \
     this flag if you are using a file as an input for your queries.")
     parser.add_argument("--index", nargs="?", const="freq", choices=['basic', 'freq', 'pos'],
-    help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
-    parser.add_argument("--output", "-o", help="output file")
+                        help="recreates the index with specified type of index among 'basic', 'freq',  'pos'")
+    parser.add_argument("--output", "-o", help="output file in which you have the list of all the relevant documents")
     parser.add_argument("--limit", "-l", type=int, default=20, help="Specify the \
     number of results display. Default is 20")
     parser.add_argument("--ws-doc", default="okapi_bm_25", help="Path to weighting scheme doc for \
     vectorial model")
     parser.add_argument("--ws-query", default="frequency", help="Path to weighting scheme query for \
     vectorial model")
-    parser.add_argument("--kv-vect", default="indexing/word2vec_google.kv",
-                help="Path to word2vec model")
+    parser.add_argument("--w2v-model", default="indexing/word2vec_google.kv",
+                        help="Path to word2vec model")
     parser.add_argument("--test", nargs="?", default=False, const=True,
-                help="Add this flag if you wish to run the testing routine")
+                        help="Add this flag if you wish to run the testing routine")
     return parser
 
-def get_vocabulary(main_directory: str) -> set:
+
+def get_vocabulary(main_directory: str) -> Set[str]:
     """Return a set containing all the different words in the dataset : the vocabulary"""
     file_paths = generate_file_paths(main_directory)
     vocabulary = set()
