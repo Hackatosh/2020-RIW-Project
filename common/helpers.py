@@ -71,7 +71,8 @@ def generate_parser() -> Any:
     vectorial model")
     parser.add_argument("--ws-query", default="frequency", help="Path to weighting scheme query for \
     vectorial model")
-    parser.add_argument("--kv-vect", help="Path to word2vec model")
+    parser.add_argument("--kv-vect", default="indexing/word2vec_google.kv",
+                help="Path to word2vec model")
     parser.add_argument("--test", nargs="?", default=False, const=True,
                 help="Add this flag if you wish to run the testing routine")
     return parser

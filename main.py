@@ -75,7 +75,7 @@ def run_test_routine(query:str, engine:str, file_path:bool, index:str):
     build_index(index)
     results = run_query(query, engine, file_path)
 
-    relevant_docs = parse_out_file(c_out_file, c_filter_folder_out_file)
+    relevant_docs = parse_out_file(args.output, c_filter_folder_out_file)
     precision, recall = calculate_precision_and_recall(results, relevant_docs)
     print(f"Precision : {precision}")
     print(f"Recall : {recall}")
@@ -104,7 +104,6 @@ c_invind_path_freq = "Serialization/freq.ii"
 # Collection, queries and out
 c_collection_path = "Data"
 c_filter_folder_out_file = "0"
-c_out_file = args.output if args.output else "Queries/dev_output/1.out"
 c_word2vec_path = 'indexing/word2vec_google.kv'
 
 # INDEXING AND SERIALIZATION
