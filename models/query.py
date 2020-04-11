@@ -33,3 +33,12 @@ class Query:
             line = f.readline()
             line = line.rstrip()  # Trailing endline can cause bugs. WARNING : You can't see them with a print !
             return Query(line)
+
+    @staticmethod
+    def load_query(query_or_path: str, consider_as_path: bool) -> "Query":
+        """Build a Query object either by parsing the argument as a file path
+        or by using the given parameter directly as a query"""
+        if consider_as_path:
+            return Query.build_from_file(query_or_path)
+        else:
+            return Query(query_or_path)
