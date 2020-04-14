@@ -16,7 +16,6 @@ requirements:
 The project also uses the Python packages `numpy` and `gensim`.
 
 ### Use the Search Engine
-Use `python` or `python3` depending on your python setup.
 The following will display all possible options, add `-h` to get a more detailed help.
 
 ```shell
@@ -26,25 +25,25 @@ python main.py
 With default options (vectorial model with pre calculated weighting scheme docs and query) you can run a query like follows
 
 ```shell
-python main.py -q "how to replace google"
+python3 main.py -q "how to replace google"
 ```
 
 or if using a file, with the `--is-file-path` option.
 ```shell
-python main.py -q path/to/file/with/query --is-file-path
+python3 main.py -q path/to/file/with/query --is-file-path
 ```
 You can change the model used to run the query with the `-e` flag.
 ```shell
-python main.py -q "how to replace google" -e bool
+python3 main.py -q "how to replace google" -e bool
 ```
 Also you can limit the number of results displayed with the `-l` flag. Default is 20
 ```shell
-python main.py -q "how to replace google" -l 10
+python3 main.py -q "how to replace google" -l 10
 ```
 
 We coulde have a complex query like this
 ```shell
-python main.py -q "number query everyday google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
+python3 main.py -q "number query everyday google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
 ```
 
 
