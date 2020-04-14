@@ -19,7 +19,7 @@ The project also uses the Python packages `numpy` and `gensim`.
 The following will display all possible options, add `-h` to get a more detailed help.
 
 ```shell
-python main.py
+python3 main.py
 ```
 
 With default options (vectorial model with pre calculated weighting scheme docs and query) you can run a query like follows
@@ -43,7 +43,7 @@ python3 main.py -q "how to replace google" -l 10
 
 We coulde have a complex query like this
 ```shell
-python3 main.py -q "number query everyday google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
+python3 main.py -q "how to replace google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
 ```
 
 
