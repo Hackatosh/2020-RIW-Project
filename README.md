@@ -16,38 +16,50 @@ requirements:
 The project also uses the Python packages `numpy` and `gensim`.
 
 ### Use the Search Engine
-The following will display all possible options, add `-h` to get a more detailed help.
+You can use the Search Engine using a Command Line Interface.
+
+The following command will display all possible options : 
 
 ```shell
 python3 main.py
 ```
 
-With default options (vectorial model with pre calculated weighting scheme docs and query) you can run a query like follows
+You can also add the flag `-h` to get detailed help and learn more about the options :
+
+```shell
+python3 main.py -h
+```
+
+To use the search engine with the default options (vectorial model with the Okapi BM 25 weighting scheme for the documents and a frequency weighting for the query), you can run a query like follows :
 
 ```shell
 python3 main.py -q "how to replace google"
 ```
 
-or if using a file, with the `--is-file-path` option.
+or if using a text file containing the query, with the `--is-file-path` option :
+
 ```shell
 python3 main.py -q path/to/file/with/query --is-file-path
 ```
-You can change the model used to run the query with the `-e` flag.
+
+You can change the model used to run the query with the `-e` flag :
+
 ```shell
 python3 main.py -q "how to replace google" -e bool
 ```
-Also you can limit the number of results displayed with the `-l` flag. Default is 20
+
+Also you can limit the number of results displayed with the `-l` flag (default value is 20) :
+
 ```shell
 python3 main.py -q "how to replace google" -l 10
 ```
 
-We coulde have a complex query like this
+Finally, you could run a complex query like this (Word2Vec Model) :
+
 ```shell
 python3 main.py -q "how to replace google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
 ```
-
-
-Learn more about the options with `python main.py -h`
+ 
 
 ## The Stanford C276 collection
 
