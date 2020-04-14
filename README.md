@@ -16,20 +16,26 @@ requirements:
 The project also uses the Python packages `numpy` and `gensim`.
 
 ### Use the Search Engine
+Use `python` or `python3` depending on your python setup.
 
-WIP !
+
+```shell
+python main.py
+```
+This will display all possible options, add `-h` to get a more detailed help.
+
 
 ## The Stanford C276 collection
 
-The collection used for this project is the public collection made available for the course 
-"CS 276 / LING 286: Information Retrieval and Web Search" from Stanford University. 
+The collection used for this project is the public collection made available for the course
+"CS 276 / LING 286: Information Retrieval and Web Search" from Stanford University.
 It is a collection of web pages from the Stanford University website.
 The webpages in the collection are not raw HTML : they are already tokenized, which makes it easier to work with them.
 
 The collection can be downloaded at the following address : http://web.stanford.edu/class/cs276/pa/pa1-data.zip.
 
 ## Built With
-The whole project is written in [Python 3](https://www.python.org/). 
+The whole project is written in [Python 3](https://www.python.org/).
 
 ## Contributing
 This project does not accept public contributions.
