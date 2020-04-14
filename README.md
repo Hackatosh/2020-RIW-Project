@@ -17,13 +17,31 @@ The project also uses the Python packages `numpy` and `gensim`.
 
 ### Use the Search Engine
 Use `python` or `python3` depending on your python setup.
-
+The following will display all possible options, add `-h` to get a more detailed help.
 
 ```shell
 python main.py
 ```
-This will display all possible options, add `-h` to get a more detailed help.
 
+With default options (vectorial model with pre calculated weighting scheme docs and query) you can run a query like follows
+
+```shell
+python main.py -q "how to replace google"
+```
+
+or if using a file, with the `--is-file-path` option.
+```shell
+python main.py -q path/to/file/with/query --is-file-path
+```
+You can change the model used to run the query with the `-e` flag.
+```shell
+python main.py -q 'how to replace google' -e bool
+```
+Also you can limit the number of results displayed. Default is 20
+```shell
+python main.py -q "how to replace google" -l 10
+```
+Learn more about the options ith `python main.py -h`
 
 ## The Stanford C276 collection
 
