@@ -35,13 +35,20 @@ python main.py -q path/to/file/with/query --is-file-path
 ```
 You can change the model used to run the query with the `-e` flag.
 ```shell
-python main.py -q 'how to replace google' -e bool
+python main.py -q "how to replace google" -e bool
 ```
-Also you can limit the number of results displayed. Default is 20
+Also you can limit the number of results displayed with the `-l` flag. Default is 20
 ```shell
 python main.py -q "how to replace google" -l 10
 ```
-Learn more about the options ith `python main.py -h`
+
+We coulde have a complex query like this
+```shell
+python main.py -q "number query everyday google" -l 50 -e wordtovec --w2v-model indexing/word2vec_google.kv
+```
+
+
+Learn more about the options with `python main.py -h`
 
 ## The Stanford C276 collection
 
