@@ -23,7 +23,7 @@ c_imap_path_freq = "Serialization/freq.imap"
 c_invind_path_freq = "Serialization/freq.ii"
 
 # Collection and Word2Vec Google Model
-c_collection_path = "Data/0"
+c_collection_path = "Data"
 c_filter_folder_out_file = "0" #None  # Use results for the whole collection to do the evaluation
 
 
